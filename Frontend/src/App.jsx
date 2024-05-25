@@ -2,12 +2,14 @@ import { useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
+import { CreateTodo } from "./components/CreateTodo";
 // import "./main.css";
 function App() {
   const [count, setCount] = useState(0);
 
   return (
     <>
+      <CreateTodo></CreateTodo>
       {/* <div>
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
@@ -28,8 +30,9 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p> */}
-      <p className="bg-blue-500 font-serif">Pratham</p>
+      {/* <p className="bg-blue-500 font-serif">Pratham</p>
       <p>hello</p>
+      <p></p> */}
     </>
   );
 }
