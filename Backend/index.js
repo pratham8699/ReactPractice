@@ -1,23 +1,25 @@
 // const express = require("express");
 import express from "express";
 import { createTodo } from "./types.js";
+import cors from "cors";
 const app = express();
 app.use(express.json());
-// console.log(app);
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  })
+);
 import { todo } from "./db.js";
 console.log({ todo });
-// import todo from "./db.js";
 app.post("/todo", async function (req, res) {
-  console.log(req.body);
+  // console.log(req.body);
   const createpayload = req.body;
   console.log(createpayload);
   const parsepayload = createTodo.safeParse(createpayload);
-
   if (!parsepayload.success) {
     res.status(411).json({
       msg: "You sent the wrong inputs",
     });
-    // return;
   }
   await todo.create({
     title: createpayload.title,

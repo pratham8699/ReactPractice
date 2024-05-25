@@ -1,15 +1,30 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./App.css";
 import { CreateTodo } from "./components/CreateTodo";
+import { Todos } from "./components/Todos";
+import axios from "axios";
 // import "./main.css";
 function App() {
-  const [count, setCount] = useState(0);
+  const [todos, settodos] = useState([]);
+  useEffect(() => {
+    fetch("http://localhost:4000/todos").then(async (res) => {
+      const json = await res.json();
+      console.log(json);
+      settodos(json);
+    });
+  }, []);
+  // fetch("http://localhost:4000/todos").then(async (res) => {
+  //   const json = await res.json();
+  //   console.log(json);
+  //   settodos(json);
+  // });
 
   return (
     <>
       <CreateTodo></CreateTodo>
+      <Todos todos={todos}></Todos>
       {/* <div>
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
