@@ -1,29 +1,39 @@
-const express = require("express");
-import { createTodo } from "./types";
+// const express = require("express");
+import express from "express";
+import { createTodo } from "./types.js";
 const app = express();
 app.use(express.json());
-const { todo } = require("./db");
+// console.log(app);
+import { todo } from "./db.js";
+console.log({ todo });
+// import todo from "./db.js";
 app.post("/todo", async function (req, res) {
+  console.log(req.body);
   const createpayload = req.body;
+  console.log(createpayload);
   const parsepayload = createTodo.safeParse(createpayload);
-  if (!parsepayload.sucess) {
+
+  if (!parsepayload.success) {
     res.status(411).json({
       msg: "You sent the wrong inputs",
     });
-    return;
+    // return;
   }
   await todo.create({
     title: createpayload.title,
     description: createpayload.description,
+    completed: false,
   });
-  res.json({
-    message: "Todo created",
+  res.status(200).json({
+    message: "todo created",
   });
 });
 app.get("/todos", async (req, res) => {
+  console.log(req.body);
   const todos = await todo.find();
+  res.status(200).json(todos);
 });
-app.put("/completed", function (req, res) {
+app.put("/completed", async function (req, res) {
   const updatePayload = req.body;
   const parsePayload = updateTodo.safeParse(updatePayload);
   if (!parsepayload.sucess) {
@@ -32,4 +42,18 @@ app.put("/completed", function (req, res) {
     });
     return;
   }
+  await todo.update(
+    {
+      _id: req.body.id,
+    },
+    {
+      completed: true,
+    }
+  );
+  res.json({
+    message: "Todo marked as completed",
+  });
+});
+app.listen(4000, () => {
+  console.log(`Server is up and running on port ${4000}`);
 });
